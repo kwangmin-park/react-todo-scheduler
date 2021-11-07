@@ -43,23 +43,34 @@ const App = () => {
     const nextId = useRef(2501);
 
     //props로 넘기는 함수는 useCallback를 사용한다. todos를 사용하므로 todos가 바뀔때마다 함수 새로 만들도록 넘겨준다.
+    // const onInsert = useCallback(text => {
+    //     const todo = {
+    //         id: nextId.current,
+    //         text,
+    //         checked: false,
+    //     };
+    //     setTodos(todos.concat(todo));
+    //     nextId.current += 1;
+    // },[todos]);
+
+    //setTodo에서 todo를 업데이트 하던 기존 방식에서 useState의 함수형 업데이트를 통해 새로운 함수를 정의하는 형태를 넘겨 todos의 의존성을 제거.
     const onInsert = useCallback(text => {
         const todo = {
             id: nextId.current,
             text,
             checked: false,
         };
-        setTodos(todos.concat(todo));
+        setTodos(todos => todos.concat(todo));
         nextId.current += 1;
-    },[todos]);
+    },[]);
 
     const onRemove = useCallback(id => {
-        setTodos(todos.filter(todo => todo.id !== id));
-    }, [todos]);
+        setTodos(todos => todos.filter(todo => todo.id !== id));
+    }, []);
 
     const onToggle = useCallback(id => {
-        setTodos(todos.map(todo => todo.id === id ? {...todo, checked:!todo.checked} : todo))
-    }, [todos]);
+        setTodos(todos => todos.map(todo => todo.id === id ? {...todo, checked:!todo.checked} : todo))
+    }, []);
 
     return (
         <TodoTemplate>
