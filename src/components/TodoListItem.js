@@ -22,4 +22,5 @@ const TodoListItem = ({todo, onRemove, onToggle}) => {
     );
 };
 
-export default TodoListItem;
+//React.memo로 감싸 todo, onRemove, onToggle이 바뀔 때만 리렌더링 함으로 성능 개선.
+export default React.memo(TodoListItem);
