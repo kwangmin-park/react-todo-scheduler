@@ -53,7 +53,9 @@ const App = () => {
     //     nextId.current += 1;
     // },[todos]);
 
-    //setTodo에서 todo를 업데이트 하던 기존 방식에서 useState의 함수형 업데이트를 통해 새로운 함수를 정의하는 형태를 넘겨 todos의 의존성을 제거.
+    //함수 변경 안되게 하는 방법(리렌더링 방지)
+    //방법1. setTodo에서 todo를 업데이트 하던 기존 방식에서 useState의 함수형 업데이트를 통해 새로운 함수를 정의하는 형태를 넘겨 todos의 의존성을 제거.
+    //방법2. useReducer 사용
     const onInsert = useCallback(text => {
         const todo = {
             id: nextId.current,
