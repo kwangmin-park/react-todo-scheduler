@@ -1,16 +1,41 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import TodoListItem from './TodoListItem';
 import './TodoList.scss';
+import {List} from "react-virtualized";
 
 const TodoList = ({todos, onRemove, onToggle}) => {
+    //react-virtualized의 List를 씀으로써 화면에 보이는 리스트아이템만 렌더링하여 리렌더링의 성능 개선.
+    const rowRenderer = useCallback(({index, key, style}) => {
+        const todo = todos[index];
+        return (
+            <TodoListItem
+                todo={todo}
+                key={key}
+                style={style}
+                onRemove={onRemove}
+                onToggle={onToggle}
+            />
+        );
+    }, [onRemove, onToggle, todos]);
+
     return(
-        <div className="TodoList">
-            {
-                todos.map((todo) => (
-                    <TodoListItem todo={todo} key={todo.id} onRemove={onRemove} onToggle={onToggle}></TodoListItem>
-                ))
-            }
-        </div>
+        <List
+            classNam="TodoList"
+            width={512} //전체 크기
+            height={513} //전체 높이
+            rowCount={todos.length} //항목 개수
+            rowHeight={57} //항목 높이
+            rowRenderer={rowRenderer} //항목을 렌더링 할 때 쓰는 함수
+            list={todos} // 배열
+            style={{outline:'none'}} //List에 기본적으로 적용되는 outline 제거
+        />
+        // <div className="TodoList">
+        //     {
+        //         todos.map((todo) => (
+        //             <TodoListItem todo={todo} key={todo.id} onRemove={onRemove} onToggle={onToggle}></TodoListItem>
+        //         ))
+        //     }
+        // </div>
     );
 };
 
